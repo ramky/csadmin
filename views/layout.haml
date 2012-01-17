@@ -1,0 +1,98 @@
+!!!Strict
+%html
+  %head
+    %title 
+      CyberDefender Customer Service Admin V3
+      = @title
+      Page
+    %link{"rel" => "Shortcut Icon", "type" => "image/ico", "href" => "/icons/favicon.ico"}
+    %link{"rel" => "stylesheet", "href" => "/static/css/jquery-ui-1.8.7.custom.css", "type" => "text/css"} 
+    %link{"rel" => "stylesheet", "href" => "/sass/all.css", "type" => "text/css"}
+
+    %link{"rel" => "stylesheet", "href" => "/static/css/jquery/jq.css", "type" => "text/css", "media" => "print, projection, screen"}
+    %link{"rel" => "stylesheet", "href" => "/static/css/jquery/themes/blue/style.css", "type" => "text/css", "media" => "print, projection, screen"}
+    %link{"href" => "/static/css/sitemapstyler.css", "rel" => "stylesheet", "type" => "text/css", "media" => "screen"}
+
+
+    -# %script{"type" => "text/javascript", "src" => "/static/js/jquery-1.4.4.min.js"}
+    %script{"type" => "text/javascript", "src" => "/static/js/jquery-1.5.min.js"}
+    %script{"type" => "text/javascript", "src" => "/static/js/jquery-ui-1.8.7.custom.min.js"}
+    %script{"type" => "text/javascript", "src" => "/static/js/jquery.tablesorter.min.js"}
+    %script{"type" => "text/javascript", "src" => "/static/js/sitemapstyler.js"}
+
+
+
+  %body
+    %div.roundedcornr_box_144753
+      %div.roundedcornr_top_144753
+        %div
+      %div.roundedcornr_content_144753
+        %h1.header CyberDefender Customer Service Admin V3
+      %div.roundedcornr_bottom_144753
+        %div
+    %noscript In order to use this application, you must have JavaScript enabled.    
+    - if logged_in?
+      .sale-info
+        %table{:border=>"0", :cellspacing=>"0", :cellpadding=>"1"}
+          %tr
+            %td.sale-info-header sale_id:
+            %td.sale-info-data#current-sale-id= current_sale_id
+          %tr
+            %td.sale-info-header order_id:
+            %td.sale-info-data#current-order-id= current_order_id
+          %tr
+            %td.sale-info-header email:
+            %td.sale-info-data#current-email= current_email
+          %tr
+            %td.sale-info-header rnt_customer_id:
+            %td.sale-info-data#current-sale-id= @rnt_customer_id
+
+      %div.header
+        %div.welcome
+          Welcome
+          = current_user.username + '!'
+        %div.logout
+          %a.header_links{:href => '/logout'}Logout
+
+      %div{:style =>"clear: both"}
+
+      %div.topnav
+        -# everyone gets access to search
+        %a{:href => '/search'}Search
+        - if current_roles.member?('Customer Service Representative')
+          %a{:href => '/comment'}Add Comment
+          %a{:href => '/retention'}Retention
+          %a{:href => '/adjustment'}Adjustment
+          %a{:href => '/reschedule_payments'}Reschedule Payments
+        - if current_roles.member?('Customer Service Lead')
+          %a{:href => '/history'}View History
+          %a{:href => '/sale_details'}View Sale
+          %a{:href => '/license'}View License
+          %a{:href => '/generate_activation_code'}Generate Activation Code
+          %a{:href => '/bulk'}Bulk Refund/Cancel
+          %a{:href => '/auth'}View Auth
+        - if current_roles.member?('Customer Service Administrator')
+          %a{:href => '/accounts'}Manage Accounts
+
+
+    %div.roundedcornr_box_940505
+      %div.roundedcornr_top_940505
+        %div
+      %div.roundedcornr_content_940505
+        %div.content
+          = yield
+      %div.roundedcornr_bottom_940505
+        %div
+
+    %br
+    %div.footer
+      &copy; CyberDefender
+      = Date.today.year.to_s 
+      all rights reserved.
+
+    %script{"type" => "text/javascript", "src" => "/static/js/csadmin.js"}        
+
+    :javascript
+      $(function(){          
+        $( "a" , ".topnav" ).button();
+      });

@@ -1,0 +1,31 @@
+%h1= @title
+
+- if (current_order)
+  %ul.rebills
+    - @rebills.each do |rebill| 
+      %li="$%.2f  %s" % rebill
+  
+    
+    
+  %form#retention-fm{ :method => "post", :action => "/retention" }
+    %fieldset
+      %legend Change EZ Payment Schedule
+      %p Change Next Billing(s) to Start on:   
+      %input#datepicker{:type => 'text', :value => "mm/dd/yyyy"}
+
+      %input#process{:type => "submit", :value => 'Process'}
+- else
+  %p.error= partial(:no_active_search)
+
+
+:javascript
+  $(function(){
+    $('#datepicker').datepicker({ 
+      dateFormat: 'mm-dd-yy',
+      defaultDate: #{@rebills.first.last}, 
+      numberOfMonths: 2
+      //appendText: '(mm/dd/yy)'
+    });
+  });   
+
+

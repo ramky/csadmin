@@ -1,0 +1,49 @@
+%table#search-results.tablesorter{:align => 'center', :border => '0', :cellpadding=>"5", :cellspacing => '0'}
+  %thead
+    %tr.results-header{:cellspacing => "1"}
+      %th Select One
+      %th Order Number
+      %th Email
+      %th Full Name
+      %th Sku Name
+      %th Cause
+      %th Adjusted
+      %th Total
+      %th Purchase Date
+    %tbody
+      :javascript
+        $(function(){
+        alert('hello');
+          $.data.orders = #{@orders.to_json};
+        });
+
+      - @orders.each do |o|
+        - order_id = o['order_id']
+        - if o['adjusted']
+          %tr.result-row.adjusted{:id => order_id }
+            %td
+              %input{:type => "radio", :name => 'sale-info'} 
+            %td
+              %nobr= order_id
+            %td= o['email']
+            %td= o['name']
+            %td= o['sku_names'].join(', ')
+            %td= o['cause']
+            %td= 'Yes'    # adjusted
+            %td= o['total']
+            %td= Time.parse(o['purchase_date']).strftime("%D %r")
+        - else
+          %tr.result-row.not-adjusted{:id => o['order_id']}
+            %td
+              %input{:type => "radio", :name => 'sale-info'}
+            %td
+              %nobr= order_id
+            %td= o['email']
+            %td= o['name']
+            %td= o['sku_names'].join(', ')
+            %td= o['cause']
+            %td= 'No'    # not adjusted
+            %td= o['total']
+            %td= Time.parse(o['purchase_date']).strftime("%D %r")
+
+

@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+# -*- ruby -*-
+
+lib = File.expand_path(File.join(__FILE__, '..', '..', 'lib'))
+$:.unshift(lib) unless $:.include?(lib)
+
+require 'rubygems'
+require 'optparse'
+
+class MyCommandLineArguments
+
+  def self.to_options
+    com = File.basename($0)
+    return {}.tap do |options|
+      ARGV.options do |args|
+        args.separator ""
+        args.on('-e ENV', '--environment=ENV', String,
+                "sets production or development environment") do |v|
+          ENV['CDEF_ENV'] = ENV['RACK_ENV'] = v
+        end
+        args.on("-d", "--daemon", "run daemonized in the background") do
+          options[:daemon] = true
+        end
+        args.on("-p", "--port=PORT", "use PORT overriding definition in /etc/cdef/cdef.yml") do |port|
+          options[:port] = port
+        end
+        args.separator <<-"END_OF_STRING"
+
+Description:
+  TO BE WRITTEN
+
+END_OF_STRING
+
+        result = args.parse!
+        msg = []
+        unless msg.blank?
+          puts args.help
+          puts "ERROR:"
+          puts msg.join("\n")
+          puts
+          abort
+        end
+        result
+      end or abort(ARGV.options.to_s)
+    end
+  end
+end
+
+ENV['RACK_ENV'] ||= ENV['CDEF_ENV']
+
+# must require *after* setting ENV
+require 'cdef/csadmin'
+Cdef::CsAdmin::Server.run(MyCommandLineArguments.to_options)
+
+exit 0

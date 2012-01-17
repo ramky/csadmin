@@ -1,0 +1,64 @@
+= CyberDefender Customer Service Admin V3
+
+== Required gems
+=== memcache-client, thin, rack-flash, haml
+
+== Setup
+
+==== Memcache
+We use memcache to store the session information.  Start with installing memcached
+sudo yum install memcached
+
+I was getting dependency errors for yum install use the following to fix it:
+sudo rpm -e perl-Net-SSLeay.x86_64
+wget http://packages.sw.be/perl-Net-SSLeay/perl-Net-SSLeay-1.36-1.el5.rfx.x86_64.rpm
+sudo rpm -i perl-Net-SSLeay-1.36-1.el5.rfx.x86_64.rpm
+sudo yum install memcached
+
+Finally startup the memcached in very verbose mode
+memcached -vv
+
+=== Mongrel startup
+We have written a customer rackup script and library to start mongrel since thin has a bug.
+
+Use cdef-rest-rackup, which scans /etc/cdef.yml for the port number.
+  $ bin/cdef-csadmin-rackup
+
+In the production environment, please use the daemon mode:
+    $ bin/cdef-csadmin-rackup --daemon
+
+=== Apache virtualhost
+We'd be using Apache as the front-end web server and it would be reverse proxying the requests to thin.
+
+<VirtualHost *:80>
+  ServerName e-dev01.cyberdefender.com
+  DocumentRoot /var/www/html
+  DirectoryIndex search
+
+  # We don't proxy any request beginning with the keyword "/static/".
+  # So, for example, "/static/logo.gif" will be served directly by
+  # Apache from the "/export/webapps/cocoon/static/logo.gif file"
+  ProxyPass        /static/ !
+
+  # Another one for "favicon.ico", so that explorer and mozilla are happy
+  ProxyPass        /favicon.ico !
+
+  ProxyPass /  http://e-dev01.cyberdefender.com:8080/
+  ProxyPassReverse / http://e-dev01.cyberdefender.com:8080/
+
+  <Directory />
+    AllowOverride None
+    Options -SymLinksIfOwnerMatch
+  </Directory>
+  <Directory  "/static">
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
+
+
+=== Sym links
+
+cd /var/www
+ln -s [path_to_public] html

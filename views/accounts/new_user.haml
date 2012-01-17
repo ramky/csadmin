@@ -1,0 +1,8 @@
+%h1= @title
+%p 
+  %form{:action => "create", :method => "post"}
+    %input#Param{:name => "username", :size => "35", :type => "text", :value => ""}
+      %br/
+    %input#Param{:name => "pasword", :size => "35", :type => "password", :value => ""}
+      %br/
+    %input#processBtn{:name => "process_btn", :type => "submit", :value => "Submit"}

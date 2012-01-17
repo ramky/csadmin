@@ -1,0 +1,31 @@
+%h1 Edit Account
+%br/
+%div.highlight= flash[:notice]
+%div#account-form{:align => 'center'}
+  %form{:action => "update", :method => "post"}
+    %div.text-input
+      %fieldset
+        %label Username:
+        %input#Param{:name => "username", :size => "35", :type => "text", :value => "#{@account["username"]}"}
+      %fieldset
+        %label Password:
+        %input#Param{:name => "password", :size => "35", :type => "password", :value => "", :disabled => ""}
+      %fieldset
+        %label First Name:
+        %input#Param{:name => "first_name", :size => "35", :type => "text", :value => "#{@account["first_name"]}"}
+      %fieldset
+        %label Last Name:
+        %input#Param{:name => "last_name", :size => "35", :type => "text", :value => "#{@account["last_name"]}"}
+      %fieldset
+        %label Email:
+        %input#Param{:name => "email", :size => "35", :type => "text", :value => "#{@account["email"]}"}
+      %fieldset
+        %label Premissions:
+    %div.permissions
+      - @account['roles'].each_key do |role|
+        %fieldset
+          %input{:type => "checkbox", :name => "#{role}", :value => "#{@account['roles'][role]}", :checked => @account['roles'][role]!="0" ? true : nil, :disabled => role == 'Customer Service Administrator' ? @disable_admin : false} 
+          %label=role
+        %br/
+    %input#processBtn{:name => "process_btn", :type => "submit", :value => "Submit"}
+    %a(href="/accounts")Cancel

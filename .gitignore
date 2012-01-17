@@ -1,0 +1,7 @@
+*~
+.svn
+.sass-cache
+pkg
+rdoc
+coverage
+.*.swp

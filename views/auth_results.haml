@@ -1,0 +1,25 @@
+
+
+%table.tablesorter{:align => 'center', :border => '0', :cellpadding=>"5", :cellspacing => '0'}
+  %thead
+    %tr.results-header{:cellspacing => "1"}
+      %th Date
+      %th Status
+      %th Amount
+      %th Method
+      %th Code
+      %th Description
+    %tbody
+      - @transactions.each do |h|
+        %tr.result-row{:date => h['timestamp'], :status => h['status']}
+          %td= Time.parse(h['timestamp']).strftime("%D %r")
+          %td= h['status']
+          %td= h['amount']
+          %td= h['method']
+          %td= h['auth_code']
+          %td= h['description']
+
+
+
+
+

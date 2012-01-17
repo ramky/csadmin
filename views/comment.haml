@@ -1,0 +1,15 @@
+%h1= @title
+
+%form#add-comment{ :method => "post", :action => "/comment" }
+  
+  - if (current_sale_id)
+    %table{:align => "center"}
+      %tr 
+        %td 
+          %textarea{ :name => "comment", :cols => '65', :rows => '10'}
+      %tr 
+        %td 
+          %input{:type => "submit", :value => 'Submit', :name => 'submit'}
+  - else
+    %p.error= partial(:no_active_search)
+

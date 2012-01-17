@@ -1,0 +1,64 @@
+%h1= @title
+%script{"type" => "text/javascript", "src" => "/static/js/adjustment.js"}
+- if (current_sale_id)
+  %form#adjustment{:method => 'post'}
+    %table{:width => '100%',:border => '0', :cellspacing => '0', :cellpadding => '0'}
+      %tr
+        %td{:width => '30%', :align => 'left'}
+          %fieldset              
+            %legend#current
+              Current Skus       
+              %ul#sitemap1.sitemap
+                -@skus['current'].each_value do |sku|
+                  %li            
+                    %a{"href" => "#"}= sku['name']  
+                    %input{:type => 'checkbox', :name => 'cancel', :value => "#{sku['number']}"} 
+                    %label{:for => "current_#{sku['number']}"} Click to cancel this sku
+                    %ul          
+                      -sku['product_types'].each do |p|
+                        %li      
+                          %a{"href" => "#"}= p            
+        %td{:width => '30%'}     
+          &nbsp;
+        %td{:width => '30%', :align => 'left'}
+          %fieldset
+            %legend#new          
+              Upgrade Opportunities           
+              %ul#sitemap2.sitemap
+                -@skus['all'].each_value do |sku|
+                  %li            
+                    %a{"href" => "#"}= sku['name']  
+                    %input{:type => 'checkbox', :name => 'to_upgrade', :value => "#{sku['number']}"} 
+                    %label{:for => "upgrade_#{sku['number']}"}Click to upgrade to this sku
+                    %ul          
+                      -sku['product_types'].each do |p|
+                        %li
+                          %a{"href" => "#"}= p
+      %tr
+        %td{:colspan => '3'}
+          &nbsp;
+      %tr
+        %td
+          &nbsp;
+        %td
+          %fieldset
+            %legend
+              Refund
+              %div{:align => 'left'}
+                %input{:type => 'hidden', :id => 'cancel_skus', :name => 'cancel_skus', :value => ''}
+                %input{:type => 'hidden', :id => 'upgrade_skus', :name => 'upgrade_skus', :value => ''}
+                %input{:type => 'checkbox', :id => 'refund', :name => 'refund', :value => "refund", :onClick => 'toggle_price()'} 
+                %label{:for => "refund"} Click to refund
+                %span#hidden-price
+                  %input{:type => 'text', :size => '5', :name => 'refund_amount', :value => '0.00'}
+
+        %td 
+          &nbsp;
+      %tr
+        %td{:colspan => '3'}
+          &nbsp;
+      %tr
+        %td{:colspan => '3'}
+          %input{:type => 'submit',:name => 'submit', :value => 'Submit', :onClick => "return adjustment_post();"}
+- else
+  %p.error= partial(:no_active_search)

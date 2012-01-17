@@ -1,0 +1,52 @@
+%h1= @title
+%div.highlight= flash[:notice]
+#create-new-account{:align => 'left', :style => 'bottom-margin: 100px;'}
+  %a(href="/accounts/new")Create New Account
+%br/ 
+- if @accounts.empty?
+  %p 
+    There are no accounts 
+- else
+  %table.tablesorter{:align => 'center', :border => '0', :cellpadding=>"5", :cellspacing => '0'}
+    %thead
+      %tr.results-header{:cellspacing => "1"}
+        %th User Name
+        %th Name
+        %th &nbsp;
+      %tbody
+        - @accounts.each_key do |account|
+          %tr.result-row{}
+            %td 
+              %a.account-name(href="/account/#{@accounts[account]['id']}/edit") 
+                =account 
+            %td 
+              =@accounts[account]['first_name'] + ' ' + @accounts[account]['last_name'] 
+            %td 
+              %a#delete-account(href="/account/delete/#{@accounts[account]['id']}" onclick="delete_account(this); return false;") 
+                delete
+
+:javascript
+  $(function(){
+    $("table")
+      .tablesorter({
+        widthFixed: true, widgets: ['zebra']
+      })
+  });
+
+  function delete_account(node){
+    if (confirm('Are you sure?')) { 
+      var f = document.createElement('form'); 
+      f.style.display = 'none'; 
+      node.parentNode.appendChild(f); 
+      f.method = 'POST'; 
+      f.action = node.href;
+      var m = document.createElement('input'); 
+      m.setAttribute('type', 'hidden'); 
+      m.setAttribute('name', '_method'); 
+      m.setAttribute('value', 'delete'); 
+      f.appendChild(m);
+      var s = document.createElement('input'); 
+      f.appendChild(s);
+      f.submit(); 
+    }
+  }

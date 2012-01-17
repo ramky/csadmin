@@ -1,0 +1,24 @@
+%h1= @title
+%div.highlight= flash[:notice]
+%table#search-results{:align => 'center', :border => '0', :cellpadding=>"5", :cellspacing => '0'}
+  %thead
+    %tr.results-header{:cellspacing => "1"}
+      %th Activation Code
+      %th Cancelled
+      %th Product Type
+      %th Sku Name
+      %th Purchase Date
+    %tbody
+      - id = @license['id'].to_s
+      %tr.result-row.even-row{ :id => id }
+        %td= @license['act_code']
+        %td= @license['cancelled']
+        %td= @license['product_type']
+        %td= @license['sku_name']
+        %td= Time.parse(@license['purchase_date']).strftime("%b %d, %Y")
+
+
+-#%br/
+-#%form#search-form{ :method => "post", :action => "/license/#{@license['id']}" }
+-#  %input#clear-button{:type => "submit", :value => "Clear Wincode", :name => "clear_wincode"}
+-#  %input#activate-button{:type => "submit", :value => "Activate License", :name => "activate_license"}

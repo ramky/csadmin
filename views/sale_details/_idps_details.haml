@@ -1,0 +1,14 @@
+%table#sale-details{:align => 'center', :cellpadding=>"5"}
+  %thead
+    %tr
+      %td#product-type
+        %b= sku_name
+    %tr.results-header{:cellspacing => "1"}
+      %th#product-type Product Type
+      %th Username
+  -details.each do |d|
+    -if d.first.include?('idps')
+      %tbody
+        %tr.even-row
+          %td#product-type= product_type_name(d.first)
+          %td= d.last['account']['username']

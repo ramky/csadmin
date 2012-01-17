@@ -1,0 +1,75 @@
+%table#search-results.tablesorter{:align => 'center', :border => '0', :cellpadding=>"5", :cellspacing => '0'}
+  %thead
+    %tr.results-header{:cellspacing => "1"}
+      %th Select One
+      %th Order Number
+      %th Email
+      %th Full Name
+      %th Sku Name
+      %th Cause
+      %th Adjusted
+      %th Total
+      %th Purchase Date
+    %tbody
+      :javascript
+        $(function(){
+          $.data.orders = #{@orders.to_json};
+        });
+      - @orders.each do |o|
+        - order_id = o['order_id']
+        - if o['adjusted']
+          %tr.result-row.adjusted{:id => order_id }
+            %td
+              %input{:type => "radio", :name => 'sale-info'} 
+            %td
+              %nobr= order_id
+            %td= o['email']
+            %td= o['name']
+            %td= o['sku_names'].join(', ')
+            %td= o['cause']
+            %td= 'Yes'    # adjusted
+            %td= o['total']
+            %td= Time.parse(o['purchase_date']).strftime("%D %r")
+        - else
+          %tr.result-row.not-adjusted{:id => o['order_id']}
+            %td
+              %input{:type => "radio", :name => 'sale-info'}
+            %td
+              %nobr= order_id
+            %td= o['email']
+            %td= o['name']
+            %td= o['sku_names'].join(', ')
+            %td= o['cause']
+            %td= 'No'    # not adjusted
+            %td= o['total']
+            %td= Time.parse(o['purchase_date']).strftime("%D %r")
+
+
+:javascript
+  $(function(){
+    $(".result-row.not-adjusted").click(function(e){
+      $(this).find('input').attr('checked', 'checked');
+      $.each($.data.orders, function(i, order){
+        if(order.order_id === e.currentTarget.id){
+            $.ajax({ url:  '/session/sale_info',
+                 dataType: 'json',
+                 type: 'post',
+                 data: order,
+                 success: function(o){
+                     $("#current-sale-id"). text(o.sale_id);
+                     $("#current-order-id").text(o.order_id);
+                     $("#current-email").   text(o.email);
+                 }
+            });
+            return false;
+        }   
+      });   
+    }); 
+    $(".result-row.adjusted").click(function(e){
+      $(this).find('input').attr('checked', '');
+      alert("The order you selected has been adjusted and "+
+            "cannot be selected to perform an action.  Please " +
+            "select an order that has not been adjusted.");
+      });
+  }); 
+

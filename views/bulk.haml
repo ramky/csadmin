@@ -1,0 +1,31 @@
+%h1= @title
+%div.highlight= flash[:notice]
+
+%form#refund-form{ :method => "post", :action => "/bulk/refund", :enctype=>"multipart/form-data" }
+  %table{:align => 'center'}
+    %tr
+      %td
+        %fieldset
+          %legend
+            Upload Refunds File(Excel):
+            %ul#search-list
+              %li 
+                %input{:type => "file", :name => "file", :id=>"bulk_file", :size=> "50"}
+
+              %li 
+                %input#process-button{:type => "submit", :value => 'Process Refunds', :name => 'submit'}
+
+%br/
+%form#cancel-form{ :method => "post", :action => "/bulk/cancel", :enctype=>"multipart/form-data" }
+  %table{:align => 'center'}
+    %tr
+      %td
+        %fieldset
+          %legend
+            Upload Cancellations File(Excel):
+            %ul#search-list
+              %li 
+                %input{:type => "file", :name => "file", :id=>"bulk_file", :size=> "50"}
+
+              %li 
+                %input#process-button{:type => "submit", :value => 'Process Cancellations', :name => 'submit'}

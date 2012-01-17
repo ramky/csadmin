@@ -1,0 +1,36 @@
+%h1= @title
+
+- if (current_order)
+  %form#retention-fm{ :method => "post", :action => "/retention" }
+    %fieldset
+      %legend 
+        Available Retention Offers
+        %ul
+          - @retention_skus.each do |sku|
+            %li 
+            - if sku['already_owned']
+              %label{:already_owned => true}
+                %input{:type => "checkbox", :name=>sku['sku_number'], :checked => 'checked', :disabled => true}
+                  = sku['sku_name']
+            - else
+              %label
+                %input.retainable{:type => "checkbox", :name=>sku['sku_number']}
+                  = sku['sku_name'] 
+
+        %input#process{:type => "submit", :value => 'Process'}
+- else
+  %p.error= partial(:no_active_search)
+
+
+:javascript
+  $(function(){
+    $("#process").click(function(){
+
+        if($('.retainable:checked').length > 0){
+          return true; 
+        } else {
+          alert("Select at least one product to process.");
+          return false;
+        }    
+    });
+  });   

@@ -1,0 +1,13 @@
+%h1= @title
+%div.highlight= flash[:notice]
+%form{:name => "login_form", :id => "login_form", :action => "/login", :method => "post"}
+  %label{:for => "username"} Username:
+  %input{:type => "text", :name => "username", :class => "text"}
+  %br
+  %br
+  %label{:for => "password"} Password:
+  %input{:type => "password", :name => "password", :class => "text"} 
+  %br
+  %br
+  %input{:type => "submit", :value => "Submit", :class => "button"}
+

@@ -1,0 +1,32 @@
+%table#sale-details{:align => 'center', :cellpadding=>"5"}
+  %thead
+    %tr 
+      %td#product-type
+        %b= sku_name
+    %tr.results-header{:cellspacing => "1"}
+      %th#product-type Product Type
+      %th Number of License
+      %th Period  
+      %th Activation Code
+      %th Expiration Date
+  -i = 0
+  -details.each do |d|
+    -if d.first.include?('edc') || d.first.include?('reg')
+      -#TODO
+      -#I have not been able to find a way to remove duplication
+      %tbody
+        -if i % 2 == 0 
+          %tr.even-row
+            %td#product-type= product_type_name(d.first)
+            %td= d.last['license']['volume']
+            %td= "#{d.last['license']['period_quantity']} #{d.last['license']['period_type']}"
+            %td= d.last['license']['activation_code']
+            %td= d.last['license']['expiration_date']
+        -else
+          %tr.odd-row
+            %td#product-type= product_type_name(d.first)
+            %td= d.last['license']['volume']
+            %td= "#{d.last['license']['period_quantity']} #{d.last['license']['period_type']}"
+            %td= d.last['license']['activation_code']
+            %td= d.last['license']['expiration_date']
+      -i += 1

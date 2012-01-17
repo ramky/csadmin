@@ -1,0 +1,5 @@
+--color
+--backtrace
+--format specdoc
+--loadby mtime
+--reverse

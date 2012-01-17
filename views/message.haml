@@ -1,0 +1,6 @@
+%h1{:class => @status.downcase}=@status
+
+- if @status.downcase =~ /success/
+  %p= 'Your ' + @action + ' was posted successfully.'
+- else
+  %p=  'Errors encountered while posting your ' + @action + '.'

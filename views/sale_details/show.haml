@@ -1,0 +1,10 @@
+- if (current_sale_id)
+  -@details.each do |d|
+    -if d.last.include?('edc') || d.last.include?('reg')
+      =partial(:'sale_details/edc_reg_details', :locals => {:details => d.last, :sku_name => d.first})
+    -if d.last.include?('idps')
+      =partial(:'sale_details/idps_details', :locals => {:details => d.last, :sku_name => d.first})
+    -if d.last.include?('bupcd')
+      =partial(:'sale_details/backupcd_details', :locals => {:details => d.last, :sku_name => d.first})
+- else
+  %p.error= partial(:no_active_search)

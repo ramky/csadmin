@@ -1,0 +1,42 @@
+%h1.tab-title= @title
+
+%form#search-form{ :method => "post", :action => "/search" }
+  %table{:align => 'center'}
+    %tr
+      %td
+        %fieldset
+          %legend
+            Search Customer by
+            %ul#search-list
+              %li 
+                %label
+                  %input{:type => "radio", :name => "search_type", :value=>"email", :checked=> ''}
+                  Email
+
+              %li 
+                %label
+                  %input{:type => "radio", :name => "search_type", :value=>"act_code"}
+                  Activation Code
+
+              %li 
+                %label
+                  %input{:type => "radio", :name => "search_type", :value=>"last_name"}
+                  Last Name
+
+              %li 
+                %label
+                  %input{:type => "radio", :name => "search_type", :value=>"order_id" }
+                  Order Number
+
+              %li 
+                %input#search-string{:type => "text", :name => "search_string", :size => "40"}
+
+              %li 
+                %input#search-button{:type => "submit", :value => 'Search', :name => 'submit'}
+
+
+
+
+
+
+   

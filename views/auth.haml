@@ -1,0 +1,21 @@
+%h1= @title
+
+%form#auth-form{ :method => "post", :action => "/auth" }
+  %table{:align => 'center'}
+    %tr
+      %td
+        %fieldset
+          %legend
+            Search by Account Email Address
+            %ul#search-list
+              %li 
+                %label
+                  Email:
+                  %input#search-string{:type => "text", :name => "search_string", :size => "40"}
+
+              %li 
+                %input#search-button{:type => "submit", :value => 'Search', :name => 'submit'}
+
+
+%script{"type" => "text/javascript", "src" => "/static/js/auth_history.js"}        
+

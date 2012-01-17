@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+#
+# NOTE: Explicitly add our lib path and override the currently installed gem.
+lib = File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib'))
+$:.unshift(lib) unless $:.include?(lib)
+require File.basename(__FILE__).gsub(/-/,'/')
+require 'pp'
+require 'irb'
+IRB.start(__FILE__)
